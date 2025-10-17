@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+{% load static %}
+
+<html lang="en">
+
+<head>
+    {% block css %}
+    <link rel="stylesheet" href="{% static "css\weather.css" %}">
+    <link rel="stylesheet" href="{% static "css\video.css" %}">
+    {% endblock  %}
+    
+</head>
+
+<body>
+    
+    <section>
+        {% block content %}
+       
+
+        <div class="container-fluid content mb-4 z-0">
+            <div class="col-lg-12 car-first">
+                <div class="litnet-carousel-container">
+                        <div class="litnet-carousel">
+                            <div class="litnet-carousel-inner">
+                                <!-- Слайд 1 -->
+                                <div class="litnet-carousel-slide litnet-active">
+                                    <img src="{% static "image/4.jpg" %}" alt="Новые книги">
+                                    <div class="litnet-slide-content">
+                                        <h2 class="litnet-slide-title">Новые поступления</h2>
+                                        <p class="litnet-slide-description">Откройте для себя свежие бестселлеры этого месяца от ведущих авторов</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Слайд 2 -->
+                                <div class="litnet-carousel-slide">
+                                    <img src="{% static "image/3.jpg" %}" alt="Популярные авторы">
+                                    <div class="litnet-slide-content">
+                                        <h2 class="litnet-slide-title">Популярные авторы</h2>
+                                        <p class="litnet-slide-description">Лучшие произведения от самых читаемых писателей современности</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Слайд 3 -->
+                                <div class="litnet-carousel-slide">
+                                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Специальные предложения">
+                                    <div class="litnet-slide-content">
+                                        <h2 class="litnet-slide-title">Специальные предложения</h2>
+                                        <p class="litnet-slide-description">Только этой недели скидки до 50% на избранные категории книг</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Прогресс бар -->
+                                <div class="litnet-carousel-progress" style="width: 0%"></div>
+                            </div>
+                            
+                            <!-- Кнопки управления -->
+                            <div class="litnet-carousel-controls">
+                                <button class="litnet-carousel-btn litnet-prev-btn">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="litnet-carousel-btn litnet-next-btn">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                            
+                            <!-- Индикаторы -->
+                            <div class="litnet-carousel-indicators">
+                                <div class="litnet-indicator litnet-active" data-slide="0"></div>
+                                <div class="litnet-indicator" data-slide="1"></div>
+                                <div class="litnet-indicator" data-slide="2"></div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="row">      
+                <div class="col-lg-3 col-md-12 zero-content pt-4">
+                    <div class="weather-widget-container">
+                        <div class="weather-widget-compact">
+
+                            <form action="{% url "main:index" %}" methog="get">
+                            <!-- Поиск по городу -->
+                            <div class="search-section">    
+                                <div class="search-title">Поиск по городу</div>
+                                <div class="weather-search-compact">
+                                    <input type="text" placeholder="Введите город..." id="weather-city-input" name="city_name" 
+                                    value="{{city}}">
+                                    <button class="weather-search-btn" id="weather-city-search-btn">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            </form>
+
+                            <!-- Поиск по координатам -->
+                             <form action="{% url "main:index" %}" method="get">
+                            <div class="search-section">
+                                <div class="search-title">Поиск по координатам</div>
+                                <div class="weather-search-compact">
+                                    <div class="coords-inputs">
+                                        <input type="text" placeholder="Широта" id="weather-lat-input" name="lat" value="{{lat}}">
+                                        <input type="text" placeholder="Долгота" id="weather-lon-input" name="lon" value="{{lon}}">
+                                    </div>
+                                    <button class="weather-search-btn" id="weather-coords-search-btn" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            </form>
+                            
+            
+
+                            
+                        
+                            <div class="weather-loading" id="weather-loading">
+                                <i class="fas fa-spinner fa-spin"></i> Загрузка...
+                            </div>
+                            <!--Информация на виджете данные о погоде-->
+                            {% if data.cod == 200 or not data %}
+                            <div class="weather-info-compact" id="weather-info">
+                                <h3 class="weather-city" id="weather-city">{{data.city}}</h3>
+                                <p class="weather-date" id="weather-date">{{data.time}}</p>
+                                <div class="weather-icon-compact">
+                                    <i class="fas fa-sun" id="weather-icon"></i>
+                                </div>
+                                <div class="weather-temp" id="weather-temp">{{data.temp}} °C</div>
+                                <p class="weather-desc" id="weather-desc">{{data.condition}}</p>
+                                
+                                <div class="weather-details-compact">
+                                    <div class="weather-detail">
+                                        <i class="fas fa-wind"></i>
+                                        <span class="weather-detail-label">Ветер</span>
+                                        <span class="weather-detail-value" id="weather-wind">{{data.wind_speed}} км/ч.</span>
+                                    </div>
+                                    <div class="weather-detail">
+                                        <i class="fas fa-tint"></i>
+                                        <span class="weather-detail-label">Влажность</span>
+                                        <span class="weather-detail-value" id="weather-humidity">{{data.humidity}} %</span>
+                                    </div>
+                                    <div class="weather-detail">
+                                        <i class="fas fa-compress-arrows-alt"></i>
+                                        <span class="weather-detail-label">Давление</span>
+                                        <span class="weather-detail-value" id="weather-pressure">{{data.pressure}} hPa</span>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="container mt-4">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+                                        <div class="alert alert-danger alert-dismissible fade show custom-shadow" role="alert">
+                                            <span>{{data.message}}</span>
+                                            <span>{{data.problem}}</span>
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>           
+                </div>
+
+                <div class="col-lg-8 col-md-12 pb-4 pt-4">
+                    
+                </div>
+                <div class="col-lg-1 col-md-12">
+                </div>
+            </div>
+
+        </div>
+        {% endblock  %}
+
+    </section>
+
+
+    {% block footer %}
+    <footer>
+        <div class="container-fluid margines">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 footer-text text-center">
+                    <p>Все права защищены</p>
+                </div>
+                <div class="col-lg-4 col-md-12 footer-text text-center">
+                    <p href="#">Контакты <br>
+                    Работа<br>
+                    Наша команда</p>
+                </div>
+                <div class="col-lg-4 col-md-12 mediafooter">
+                    <img style="width: 50px; margin-inline: 1em" src="{% static "image\footer\tg.png" %}" alt="">
+                    <img style="width: 50px; margin-inline: 1em" src="{% static "image\footer\yt.png" %}" alt="">
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    {% endblock  %}
+</body>
+</html>

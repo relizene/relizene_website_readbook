@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load static %}
+<html lang="en">
+<head>
+    {% block css %}
+        <link rel="stylesheet" href="{% static "css\book\book.css" %}">
+        <link rel="stylesheet" href="{% static "css\book\book_filter.css" %}">
+    {% endblock  %}
+</head>
+<body>
+    <section>
+        {% block content %}
+         <div class="container-fluid content">
+
+            <!-- Фильтрация -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12">
+                            <div class="filters-container">
+                                <!-- Заголовок фильтров -->
+                                <div class="filters-header">
+                                    <h3 class="filters-title">
+                                        <i class="fas fa-filter"></i>
+                                        Фильтры
+                                    </h3>                                   
+                                </div>
+
+                                <!-- Основные фильтры -->
+                                <div class="filters-grid">
+                                    {% for cats in catalog %}
+                                    <a href="{% url 'book:book' cats.slug %}" class="filter-item {% if slug_url == cats.slug %}active{% endif %}">
+                                        <button type="submit" class="filter_btn_1">
+                                                <div class="filter-item
+                                                 {% if slug_url == cats.slug %}active {% endif %}">
+                                                    <div class="filter-icon">
+                                                        <i class="fas fa-star"></i>
+                                                    </div>
+                                                    <span class="filter-text">{{cats.name}}</span>
+                                                    <div class="filter-count">96</div>
+                                                </div>
+                                        </button>    
+                                    </a>
+                                    {% endfor %}
+                                <!-- Дополнительные фильтры -->
+                                    <div class="additional-filters">
+                                        <input type="checkbox" id="toggle-filters" class="toggle-checkbox">
+                                        <label for="toggle-filters" class="toggle-filters-btn">
+                                            <i class="fas fa-sliders-h"></i>
+                                            Дополнительные фильтры
+                                            <i class="fas fa-chevron-down"></i>
+                                        </label>
+
+                                        <div class="extra-filters-content">
+                                            <div class="filter-group">
+                                                <label class="filter-group-label">Год издания</label>
+                                                <div class="year-filters">
+                                                    <button type="button" class="year-filter">2020-2024</button>
+                                                    <button type="button" class="year-filter">2010-2019</button>
+                                                    <button type="button" class="year-filter">2000-2009</button>
+                                                    <button type="button" class="year-filter">до 2000</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="filter-group">
+                                                <label class="filter-group-label">Рейтинг</label>
+                                                <div class="rating-filters">
+                                                    <button type="button" class="rating-filter">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        4.5+
+                                                    </button>
+                                                    <button type="button" class="rating-filter">
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        <i class="fas fa-star"></i>
+                                                        4.0+
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Карточки книг -->
+            <div class="row ">
+                <div class="col-lg-2 col-md-12">
+                </div>               
+                <div class="col-lg-10 col-md-12">
+                        <div class="row">
+                            <div class="book-cards-container">
+                                    <!-- Карточка 1 -->
+                                     {% for book in books %}
+                                     <div class="book-card">
+                                         <div class="book-card-content">
+                                             <img src="{{book.image.url}}" 
+                                                 alt="{{book.name}}" class="book-cover">
+                                             <div class="book-info">
+                                                 <h3 class="book-title">{{book.name}}</h3>
+                                                 <p class="book-author">{{book.author_name}}</p>
+                                                 <p class="book-year">{{book.reliz_year}} год</p>
+                                                 <div class="book-stats">
+                                                     <div class="likes-count">
+                                                         <i class="fas fa-heart"></i>
+                                                         <span>{{book.likes}}</span>
+                                                     </div>
+                                                     <span class="book-badge">{{book.category}}</span>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                     {% endfor %}
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+
+            <!-- Пагинация -->
+            <div class="row ">
+                <div class="col-lg-2 col-md-12">
+                </div>
+                <div class="col-lg-10 col-md-12 book-pagination">
+                    <!-- Добавьте этот код после карточек книг внутри col-lg-10 -->
+                    <div class="pagination-container">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <!-- Стрелка назад -->
+                                <li class="page-item">
+                                    <a class="page-link prev" href="#" aria-label="Previous">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                                
+                                <!-- Номера страниц -->
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                
+                                <!-- Многоточие -->
+                                <li class="page-item disabled">
+                                    <span class="page-link dots">...</span>
+                                </li>
+                                
+                                <!-- Последняя страница -->
+                                <li class="page-item"><a class="page-link" href="#">12</a></li>
+                                
+                                <!-- Стрелка вперед -->
+                                <li class="page-item">
+                                    <a class="page-link next" href="#" aria-label="Next">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        
+                        <!-- Информация о странице -->
+                        <div class="page-info">
+                            Показано <span class="current-items">1-8</span> из <span class="total-items">96</span> книг
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% endblock  %}
+    </section>
+
+     {% block footer %}
+    <footer>
+        <div class="container-fluid margines">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 footer-text text-center">
+                    <p>Все права защищены</p>
+                </div>
+                <div class="col-lg-4 col-md-12 footer-text text-center">
+                    <p href="#">Контакты <br>
+                    Работа<br>
+                    Наша команда</p>
+                </div>
+                <div class="col-lg-4 col-md-12 mediafooter">
+                    <img style="width: 50px; margin-inline: 1em" src="{% static "image\footer\tg.png" %}" alt="">
+                    <img style="width: 50px; margin-inline: 1em" src="{% static "image\footer\yt.png" %}" alt="">
+                </div>
+            </div>
+        </div>
+
+    </footer>
+    {% endblock  %}
+    <script src="{% static "js\book\book.js" %}"></script>
+    <script src="{% static "js\book\pagination.js" %}"></script>
+    <script src="{% static "js\book\filter.js" %}"></script>
+</body>
+</html>
