@@ -1,10 +1,8 @@
-from socket import timeout
-from urllib import request
 from django.db import models
 import requests
-import json
 import base64
 import os
+
 # Create your models here.
 class BooksCategories(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Название')
@@ -60,9 +58,7 @@ class BooksRead(models.Model):
         
         #отправка в микросервис если статус "pending" и есть file
         if self.file and self.upload_status == 'pending':
-            self._upload_to_microservice()
-    def delete_model(self, requests, obj):
-        pass       
+            self._upload_to_microservice()            
     
     
     def _upload_to_microservice(self):

@@ -1,3 +1,4 @@
+from email import message
 from typing import Any
 from django.contrib import admin
 from django.forms import ModelForm
@@ -94,3 +95,48 @@ class BooksAdmin(admin.ModelAdmin):
             return readonly_fields + ('file',)       
         return readonly_fields
     
+    def delete_model(self, request, obj):
+            if obj.pk is None:
+                messages.warning(request, f'ошибка: {obj.name} к сожалению не найден')
+            if obj.book_id:
+                payload = {
+                    'id' : obj.book_id,
+                    'pages' : str(obj.book_lists),
+                }
+                try:
+                    response = requests.post('http://localhost:8000/books-delete', json=payload, timeout=30).json()
+                    if response['cod'] == '2001':
+                        #Полное удаление и страниц и книги и самой записи в постгресс
+                        super().delete_model(request, obj)
+                    
+                    elif response['cod'] == '2003':
+                        #Частичное удаление, страницы удалены, но запись в книге осталась, поэтому из постгресс не убираем
+                        BooksRead.objects.filter(pk=obj.pk).update(
+                        upload_message = f"{response['message']}",
+                        upload_status = 'success',
+                        book_lists = 0,
+                        book_id = obj.book_id,
+                        )
+                        messages.error(request, 
+                                       f"Книга '{obj.name}' не удалена из MongoDB," + 
+                                       " но страницы все удалились, повторите удаление")
+                    
+                    elif response['cod'] == '2002':
+                        #Частичное удаление, страницы удалились в не полном составе и книга поэтому тоже не удаляется
+                        BooksRead.objects.filter(pk=obj.pk).update(
+                        upload_message = f"{response['message']}",
+                        upload_status = 'success',
+                        book_lists = obj.book_lists - int(response['delete_count']),
+                        book_id = obj.book_id,
+                        )
+                        messages.error(
+                        request, f"Книга '{obj.name}' не удалена из MongoDB, страницы удалились" +
+                                        f" в количестве {response['delete_count']}"
+                        )
+                    else:
+                        messages.error(request, f"ошибка: {response['message']}")
+                        
+                except Exception as e:
+                    messages.error(request, f'ошибка удаления из монго DB: {str(e)}')
+            else:
+                super().delete_model(request, obj)
