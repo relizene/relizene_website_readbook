@@ -1,4 +1,5 @@
 {% load static %}
+{% load books_tags %}
 <!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
@@ -101,7 +102,7 @@
                                     <div class="collapse navbar-collapse" id="navbarNav">
                                         <ul class="navbar-nav">
                                             <li class="nav-item">
-                                                <a class="nav-link" style="color:rgb(156, 170, 255);"
+                                                <a class="nav-link"
                                                 aria-current="page" href="{% url "main:index" %}">Домашняя страница</a>
                                             </li>
                                             <li class="nav-item">
@@ -145,9 +146,9 @@
                         <div class="col-lg-2 right-pag col-md-12">
                             <nav class="navbar navbar-light bg-dark mb-0 pb-0 mt-2">
                                 <div class="container-fluid right-pag-box">
-                                    <form class="d-flex flex-box">
+                                    <form class="d-flex flex-box" action='get' href="{% url "book:search" %}">
                                         <input class="form-control me-2 search-fields text-center" type="search"
-                                            placeholder="Найти" aria-label="Search">
+                                            placeholder="Найти" aria-label="Search" name="books_search">
                                         <button class="btn btn-outline-success button-fields" type="submit">Клик</button>
                                     </form>
                                 </div>
