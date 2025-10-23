@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static %}
+{% load books_tags %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static "css\book\book_read\book-read.css" %}">
+    <link rel="stylesheet" href="{% static "css\book\book_read\book-form.css" %}">
+
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center pt-0 mt-0"> <!-- Добавлен justify-content-center -->
+        <!-- Левая пустая колонка -->
+        <div class="col-lg-2 col-md-1 d-none d-lg-block pt-0 mt-0"> <!-- Добавлен d-none d-lg-block -->
+        </div>
+        
+        <!-- Центральная колонка с контентом -->
+        <div class="col-lg-8 col-md-10 col-sm-12 pt-0"> <!-- Изменены breakpoints -->
+            <div class="floating-shapes">
+                <div class="shape"></div>
+                <div class="shape"></div>
+                <div class="shape"></div>
+            </div>
+
+            <div class="book-widget">
+                <div class="book-cover-container">
+                    <img src="{{book.image.url}}" 
+                         alt="Обложка книги" 
+                         class="book-cover">
+                </div>
+                
+                <div class="book-content">
+                    <h1 class="book-title">{{book.name}}</h1>
+                    <div class="book-author">Автор: {{book.author_name}}</div>
+                    
+                    <div class="book-meta">
+                        <div class="meta-item">
+                            <svg class="meta-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 002 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+                            </svg>
+                            <span>Год выпуска: {{book.reliz_year}}</span>
+                        </div>
+                        
+                        <div class="meta-item">
+                            <svg class="meta-icon" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            <span>Жанр: {{book.category}}</span>
+                        </div>
+                    </div>
+
+                    <div class="book-description">
+                        <p>Описание</p>
+                        <p class="mt-3">{{book.description}}</p>
+                    </div>
+
+                    <div class="stats-container">
+                        <div class="stat">
+                            <button class="like-btn" id="likeButton">
+                                <span>❤️</span>
+                                <span id="likeCount">{{book.likes}}</span> лайков
+                            </button>
+                        </div>
+                        <div class="stat pages-count">
+                            <span>📖</span>
+                            <span>{{book.book_lists}} страницы</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Правая пустая колонка -->
+        <div class="col-lg-2 col-md-1 d-none d-lg-block"> <!-- Добавлен d-none d-lg-block -->
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-lg-2 col-md-1 d-none d-lg-block">
+        </div>
+        
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <!-- Форма для чтения книги -->
+            <div class="book-reader-container">
+                <!-- Панель управления -->
+                <div class="reader-controls">
+                    {% if book.book_page > 1 %}        
+                    <a href="?{% change_params page=book.book_page|add:'-1' %}" style="text-decoration:none;">
+                    <button class="control-btn" id="prevPage">
+                        <span>←</span> Предыдущая
+                    </button>
+                    </a>
+                    {% else %}
+                    <button class="control-btn disable" id="prevPage" style="disable">
+                        <span>←</span> Предыдущая
+                    </button>
+                    {% endif %}
+                    
+                    <div class="page-info">
+                        <span class="current-page">{{book.book_page}}</span>
+                        <span class="page-separator">/</span>
+                        <span class="total-pages">{{book.book_lists}}</span>
+                    </div>
+                    
+                    {% if book.book_page < book.book_lists %}
+                    <a href="?{% change_params page=book.book_page|add:'1' %}" style="text-decoration:none;">
+                    <button class="control-btn" id="nextPage">
+                        Следующая <span>→</span>
+                    </button>
+                    </a>
+                    {% else %}
+
+                    {% endif %}
+                </div>
+
+                <!-- Контейнер страницы -->
+                <div class="page-container">
+                    <div class="book-page" id="bookPage">
+                        <div class="page-header">
+                            <div class="chapter-meta">
+                                <span class="page-number">Страница {{book.book_page}}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="page-content">
+                            <p>{{book.book_content|linebreaksbr}}</p>
+                        </div>
+                        
+                        <div class="page-footer">
+                            <div class="reading-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0.26%"></div>
+                                </div>
+                                <span>Прочитано: {{book.book_read_percent}}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Дополнительные элементы управления -->
+                <div class="reader-settings">
+                    <button class="setting-btn" id="fontSizeDown">A-</button>
+                    <button class="setting-btn active" id="fontSizeNormal">A</button>
+                    <button class="setting-btn" id="fontSizeUp">A+</button>
+                    
+                    <button class="setting-btn" id="toggleTheme">
+                        <span>🌙</span> Ночной режим
+                    </button>
+                    
+                    <button class="setting-btn" id="bookmarkBtn">
+                        <span>🔖</span> Закладка
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-2 col-md-1 d-none d-lg-block">
+        </div>
+    </div>
+</div>
+{% endblock %}

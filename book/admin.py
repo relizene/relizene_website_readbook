@@ -92,7 +92,7 @@ class BooksAdmin(admin.ModelAdmin):
         readonly_fields =  super().get_readonly_fields(request, obj)
         readonly_fields = ('book_lists','book_id', 'upload_message', 'upload_status',)
         if obj and obj.upload_status == 'success':
-            return readonly_fields + ('file',)       
+            return readonly_fields     
         return readonly_fields
     
     def delete_model(self, request, obj):

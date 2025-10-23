@@ -102,6 +102,7 @@
                             <div class="book-cards-container">
                                     <!-- Карточка 1 -->
                                      {% for book in books %}
+                                     <a href="{% url "book:read" book.slug %}" style="text-decoration:none;">
                                      <div class="book-card">
                                          <div class="book-card-content">
                                              <img src="{{book.image.url}}" 
@@ -120,6 +121,7 @@
                                              </div>
                                          </div>
                                      </div>
+                                     </a>
                                      {% endfor %}
                             </div>
                         </div>

@@ -1,7 +1,6 @@
 {% load static %}
 {% load books_tags %}
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -36,10 +35,12 @@
 
                     <!-- Поиск справа -->
                     <div class="mobile-search">
-                        <input class="mobile-search-input" type="text" placeholder="Поиск...">
-                        <button class="mobile-search-btn">
-                            <i class="fas fa-search"></i>
-                        </button>
+                        <form action="{% url "book:search" %}" method="get">
+                            <input class="mobile-search-input" type="text" placeholder="Поиск..." name="books_search">
+                            <button class="mobile-search-btn" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
 
@@ -146,7 +147,7 @@
                         <div class="col-lg-2 right-pag col-md-12">
                             <nav class="navbar navbar-light bg-dark mb-0 pb-0 mt-2">
                                 <div class="container-fluid right-pag-box">
-                                    <form class="d-flex flex-box" action='get' href="{% url "book:search" %}">
+                                    <form class="d-flex flex-box" action="{% url "book:search" %}" method="get">
                                         <input class="form-control me-2 search-fields text-center" type="search"
                                             placeholder="Найти" aria-label="Search" name="books_search">
                                         <button class="btn btn-outline-success button-fields" type="submit">Клик</button>
@@ -175,6 +176,9 @@
         crossorigin="anonymous"></script>
     <script src="{% static "js\weather.js" %}"></script>
     <script src="{% static "js\home.js" %}"></script>
+    <script src="{% static "js\book\book_read.js" %}"></script>
+    <script src="{% static "js\book\book_form.js" %}"></script>
+
     
 </body>
 </html>
