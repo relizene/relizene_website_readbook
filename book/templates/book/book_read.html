@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid">
+<div class="container-fluid pt-0 mt-0">
     <div class="row justify-content-center pt-0 mt-0"> <!-- Добавлен justify-content-center -->
         <!-- Левая пустая колонка -->
         <div class="col-lg-2 col-md-1 d-none d-lg-block pt-0 mt-0"> <!-- Добавлен d-none d-lg-block -->
@@ -23,7 +23,7 @@
                 <div class="shape"></div>
             </div>
 
-            <div class="book-widget">
+            <div class="book-widget mt-0">
                 <div class="book-cover-container">
                     <img src="{{book.image.url}}" 
                          alt="Обложка книги" 
@@ -57,10 +57,13 @@
 
                     <div class="stats-container">
                         <div class="stat">
-                            <button class="like-btn" id="likeButton">
-                                <span>❤️</span>
-                                <span id="likeCount">{{book.likes}}</span> лайков
-                            </button>
+                             <a href="{% url "book:read" book.slug %}" style="text-decoration:none;">
+                                <button class="like-btn" id="likeButton">
+                                    <input type="text" name='like' style="text-decoration:none;" value="1">
+                                    <span>❤️</span>
+                                    <span id="likeCount">{{book.likes}}</span> лайков                                
+                                </button>
+                            </a>
                         </div>
                         <div class="stat pages-count">
                             <span>📖</span>
@@ -85,6 +88,58 @@
         <div class="col-lg-8 col-md-10 col-sm-12">
             <!-- Форма для чтения книги -->
             <div class="book-reader-container">
+                
+                <!-- Дополнительные элементы управления -->
+                <div class="reader-settings">
+                    <button class="setting-btn" id="fontSizeDown">A-</button>
+                    <button class="setting-btn active" id="fontSizeNormal">A</button>
+                    <button class="setting-btn" id="fontSizeUp">A+</button>
+                    
+                    <button class="setting-btn" id="toggleTheme">
+                        <span>🌙</span> Ночной режим
+                    </button>
+                    
+                    <button class="setting-btn" id="bookmarkBtn">
+                        <span>🔖</span> Закладка
+                    </button>
+                </div>
+
+                <!-- Контейнер страницы -->
+                <div class="page-container">
+                    <div class="book-page" id="bookPage">
+                        <div class="page-header">
+                            <div class="chapter-meta">
+                                <span class="page-number">Страница {{book.book_page}}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="page-content">
+                            {% if book.book_content %}
+                                <p>{{book.book_content|linebreaksbr}}</p>
+                            {% else %} 
+                                <div class="empty-state" id="emptyState">
+                                    <div class="empty-content">
+                                    <div class="empty-icon">📚</div>
+                                    <h3 class="empty-title">К сожалению такой страницы нет</h3>
+                                    <p class="empty-description">Попробуйте изменить параметры поиска</p>
+                                    </div>
+                                </div>   
+                            {% endif %}    
+                        </div>
+                        
+                        <div class="page-footer">
+                            <div class="reading-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0.26%"></div>
+                                </div>
+                                <span>Прочитано: {{book.book_read_percent}}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
                 <!-- Панель управления -->
                 <div class="reader-controls">
                     {% if book.book_page > 1 %}        
@@ -103,6 +158,11 @@
                         <span class="current-page">{{book.book_page}}</span>
                         <span class="page-separator">/</span>
                         <span class="total-pages">{{book.book_lists}}</span>
+                        <form class="search-form" action="{% url "book:read" book.slug %}" method="get">
+                            <input class="form-control me-2 search-fields text-center" type="search"
+                                placeholder="Найти" aria-label="Search" name="page" id="bookSearch">
+                            <button type="submit" style="display: none;"></button> <!-- Скрытая кнопка для отправки по Enter -->
+                        </form>
                     </div>
                     
                     {% if book.book_page < book.book_lists %}
@@ -112,48 +172,13 @@
                     </button>
                     </a>
                     {% else %}
-
+                        <button class="control-btn disable" id="prevPage" style="disable">
+                        Следующая
+                        <span>←</span> 
+                    </button>
                     {% endif %}
                 </div>
 
-                <!-- Контейнер страницы -->
-                <div class="page-container">
-                    <div class="book-page" id="bookPage">
-                        <div class="page-header">
-                            <div class="chapter-meta">
-                                <span class="page-number">Страница {{book.book_page}}</span>
-                            </div>
-                        </div>
-                        
-                        <div class="page-content">
-                            <p>{{book.book_content|linebreaksbr}}</p>
-                        </div>
-                        
-                        <div class="page-footer">
-                            <div class="reading-progress">
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 0.26%"></div>
-                                </div>
-                                <span>Прочитано: {{book.book_read_percent}}%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Дополнительные элементы управления -->
-                <div class="reader-settings">
-                    <button class="setting-btn" id="fontSizeDown">A-</button>
-                    <button class="setting-btn active" id="fontSizeNormal">A</button>
-                    <button class="setting-btn" id="fontSizeUp">A+</button>
-                    
-                    <button class="setting-btn" id="toggleTheme">
-                        <span>🌙</span> Ночной режим
-                    </button>
-                    
-                    <button class="setting-btn" id="bookmarkBtn">
-                        <span>🔖</span> Закладка
-                    </button>
-                </div>
             </div>
         </div>
 
@@ -162,3 +187,8 @@
     </div>
 </div>
 {% endblock %}
+
+{% block script %}
+    <script src="{% static "js\book\book_read.js" %}"></script>
+    <script src="{% static "js\book\book_form.js" %}"></script>
+{% endblock  %}

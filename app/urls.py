@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import include, path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls', namespace='main')),
     path('book/', include('book.urls', namespace='book')),
+    path('test-404/', TemplateView.as_view(template_name='404.html'))
 ] 
 
 if settings.DEBUG:

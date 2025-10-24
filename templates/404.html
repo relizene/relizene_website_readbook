@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static "css\base\404.css" %}">
+{% endblock  %}
+
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 zuber">
+            <div class="error-container">
+                    <div class="error-content">
+                        <div class="error-animation">
+                            <div class="book">
+                                <div class="cover">
+                                    <div class="page"></div>
+                                    <div class="page"></div>
+                                    <div class="page"></div>
+                                </div>
+                            </div>
+                            <div class="number">4</div>
+                            <div class="book lost">
+                                <div class="cover">
+                                    <div class="question">?</div>
+                                </div>
+                            </div>
+                            <div class="number">4</div>
+                        </div>
+                        
+                        <h1 class="error-title">Страница потерялась</h1>
+                        
+                        <p class="error-description">
+                            Кажется, эта страница отправилась в путешествие по миру книг 
+                            и пока не вернулась. Попробуйте начать с главной страницы.
+                        </p>
+                        
+                        <div class="error-actions">
+                            <a href="{% url "main:index" %}" class="error-btn primary">
+                                <span>🏠 На главную</span>
+                            </a>
+                            <a href="{% url "book:book" 'all' %}" class="error-btn secondary">
+                                <span>📚 В каталог книг</span>
+                            </a>
+
+                            <div class="error-search">
+                                <p>Или попробуйте найти нужную книгу:</p>
+                                <form class="error-search-form" action="{% url "book:search" %}" method="get">
+                                    <input class="error-search-input" type="search"
+                                    placeholder="Найти" aria-label="Search" name="books_search">
+                                    <button class="error-search-btn" type="submit">Клик</button>
+                                </form>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                    <div class="error-footer">
+                        <p>Если проблема повторяется, <a href="#">сообщите нам</a></p>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock  %}

@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
-<html lang="en">
 
 <head>
     {% block css %}
-    <link rel="stylesheet" href="{% static "css\weather.css" %}">
-    <link rel="stylesheet" href="{% static "css\video.css" %}">
+    <link rel="stylesheet" href="{% static "css\index\weather.css" %}">
     {% endblock  %}
     
 </head>
@@ -16,15 +14,16 @@
     <section>
         {% block content %}
        
-
-        <div class="container-fluid content mb-4 z-0">
-            <div class="col-lg-12 car-first">
+        <div class="container-fluid pt-0 mt-0 pt-0">
+            <div class="row pt-0 mt-0 pt-0">
+                 <div class="container-fluid content mb-0 mt-0 pt-0">
+            <div class="col-lg-12 car-first pt-0 mt-0 pt-0">
                 <div class="litnet-carousel-container">
                         <div class="litnet-carousel">
                             <div class="litnet-carousel-inner">
                                 <!-- Слайд 1 -->
                                 <div class="litnet-carousel-slide litnet-active">
-                                    <img src="{% static "image/4.jpg" %}" alt="Новые книги">
+                                    <img src="{% static "image\home_images\2.jpg" %}" alt="Новые книги">
                                     <div class="litnet-slide-content">
                                         <h2 class="litnet-slide-title">Новые поступления</h2>
                                         <p class="litnet-slide-description">Откройте для себя свежие бестселлеры этого месяца от ведущих авторов</p>
@@ -33,7 +32,7 @@
                                 
                                 <!-- Слайд 2 -->
                                 <div class="litnet-carousel-slide">
-                                    <img src="{% static "image/3.jpg" %}" alt="Популярные авторы">
+                                    <img src="{% static "image\home_images\3.jpg" %}" alt="Популярные авторы">
                                     <div class="litnet-slide-content">
                                         <h2 class="litnet-slide-title">Популярные авторы</h2>
                                         <p class="litnet-slide-description">Лучшие произведения от самых читаемых писателей современности</p>
@@ -42,7 +41,7 @@
                                 
                                 <!-- Слайд 3 -->
                                 <div class="litnet-carousel-slide">
-                                    <img src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80" alt="Специальные предложения">
+                                    <img src="{% static "image\home_images\5.jpg" %}">
                                     <div class="litnet-slide-content">
                                         <h2 class="litnet-slide-title">Специальные предложения</h2>
                                         <p class="litnet-slide-description">Только этой недели скидки до 50% на избранные категории книг</p>
@@ -72,6 +71,7 @@
                         </div>
                     </div>
             </div>
+
             <div class="row">      
                 <div class="col-lg-3 col-md-12 zero-content pt-4">
                     <div class="weather-widget-container">
@@ -168,6 +168,9 @@
             </div>
 
         </div>
+            </div>
+        </div>
+       
         {% endblock  %}
 
     </section>
@@ -193,6 +196,10 @@
         </div>
 
     </footer>
+    {% endblock  %}
+
+    {% block script %}
+       <script src="{% static "js\index\weather.js" %}"></script>
     {% endblock  %}
 </body>
 </html>

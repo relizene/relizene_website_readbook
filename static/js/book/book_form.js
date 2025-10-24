@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentPage = 1;
     const totalPages = 384;
     let fontSize = 1; // множитель размера шрифта
-    let isNightMode = false;
+    let isNightMode = true;
 
     // Анимация перелистывания страницы
     function flipPage(direction) {
@@ -164,9 +164,5 @@ document.addEventListener('DOMContentLoaded', function() {
     enableKeyboardNavigation();
     
     // Параллакс эффект для фона при скролле
-    window.addEventListener('scroll', function() {
-        const scrolled = window.pageYOffset;
-        const parallax = document.querySelector('.book-reader-container');
-        parallax.style.backgroundPosition = `center ${scrolled * 0.5}px`;
-    });
+    
 });

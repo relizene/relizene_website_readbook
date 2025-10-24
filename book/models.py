@@ -28,12 +28,13 @@ class BooksRead(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name='Название Книги')
     slug = models.SlugField(max_length=200, unique=True, blank=True, null=True, verbose_name='Url')
     author_name = models.CharField(max_length=150,  verbose_name='Автор книги')
-    reliz_year = models.CharField(max_length=150,  verbose_name='Год выпуска')
+    reliz_year = models.IntegerField(blank=True ,null=True,default=0, verbose_name='Год выпуска')
     description = models.TextField(blank=True, null=True, verbose_name='Описание',)
     image = models.ImageField(upload_to='book_images', blank=True, null=True, verbose_name='Изображение')
     category = models.ForeignKey(to=BooksCategories, on_delete=models.CASCADE, verbose_name='Категория')
     likes = models.IntegerField(blank=True, null=True, verbose_name='Лайки')
     file = models.FileField(blank=True, null=True, upload_to='book_file', verbose_name='Файл книги в pdf')
+    ratings = models.DecimalField(max_digits=5, decimal_places=1, default=0.0)
     
     #статусы ожидания
     upload_message = models.TextField(blank=True, null=True)
@@ -51,6 +52,7 @@ class BooksRead(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
     
     def save(self, *args, **kwargs):
         #Сначала сохраняем обьект чтобы получить file_path

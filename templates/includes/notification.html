@@ -1,0 +1,31 @@
+{% load static %}
+
+
+<!-- Контейнер для сообщений -->
+<div class="messages-widget">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {{ message.tags }}">
+                <div class="message-content">
+                    <span class="message-icon">
+                        {% if message.tags == 'error' %}⚠️
+                        {% elif message.tags == 'success' %}✅
+                        {% elif message.tags == 'warning' %}⚠️  
+                        {% else %}ℹ️{% endif %}
+                    </span>
+                    <span class="message-text">{{ message }}</span>
+                </div>
+                <button class="message-close" onclick="this.parentElement.remove()">×</button>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<!-- Блок для случая "ничего не найдено" -->
+<div class="empty-state" id="emptyState" style="display: none;">
+    <div class="empty-content">
+        <div class="empty-icon">📚</div>
+        <h3 class="empty-title">Ничего не найдено</h3>
+        <p class="empty-description">Попробуйте изменить параметры поиска</p>
+    </div>
+</div>

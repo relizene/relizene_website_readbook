@@ -10,28 +10,42 @@ import requests
 class CatalogView(ListView):
     template_name = 'book/book.html'
     model = BooksRead
-    paginate_by = 3
+    paginate_by = 6
     context_object_name = 'books'
-    allow_empty = False
+    allow_empty = True
     
     
     def get_queryset(self):
         books_slug = self.kwargs.get('slug_url')
         book_search = self.request.GET.get('books_search')
+        rating = self.request.GET.get('ratings')
+        year = self.request.GET.get('year')
         
         if books_slug == 'all':
-            books = super().get_queryset().order_by('id')            
+            books = super().get_queryset().order_by('id')
+                
         elif book_search:
             books = q_search(book_search)
-            if not books:
-                raise Http404()           
+                        
         else:
-            books = super().get_queryset().filter(category__slug=books_slug)       
+            books = super().get_queryset().filter(category__slug=books_slug)
+        
+        if rating:
+            if rating == 'one':
+                books = books.filter(ratings__gt=4.5)
+            else:
+                books = books.filter(ratings__gt=4.0)
+        
+        if year:
+            if year == 'one':
+                books = books.filter(reliz_year__gt=1800, reliz_year__lt=1900)
+            if year == 'two':
+                books = books.filter(reliz_year__gt=1900,reliz_year__lt=2000)
+            if year == 'three':
+                books = books.filter(reliz_year__gt=2000)
+              
         return books
-    
-    
-    
-    
+     
     def get_context_data(self, **kwargs) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         catalog = BooksCategories.objects.all().order_by('id')
@@ -60,30 +74,31 @@ class ReadBook(DetailView):
         except Exception as e:
             return None
         
-    
     def get_page(self, obj, page):
         """Функция для получения данных страницы от фастапи"""
         if not obj or not obj.book_id:
-            raise Http404(f'к сожалению данной книги нет или книга не загружена')
+            return obj
         page_number = 1 if page == None else int(page)
         
         if page_number < 1 or page_number > obj.book_lists:
-            raise Http404(f'к сожалению данной страницы нету.')
+            return obj
         obj.book_content = self._fetch_page_from_api(obj.book_id, str(page_number))
         obj.book_page = page_number
         obj.book_read_percent = round((page_number * 100) / obj.book_lists, 2)
         return obj
-        
-    
+         
     def get_object(self, queryset: QuerySet[Any] | None = ...) :
+        
+        page = self.request.GET.get('page', None)
+        like = self.request.GET.get('like', None)
         try:
             book = BooksRead.objects.get(slug=self.kwargs.get(self.slug_url_kwarg))
-            page = self.request.GET.get('page', None)
+            
             return  self.get_page(book, page)         
         except Exception as e:
             raise Http404(f'Книга не найдена')
         
-        
+                
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context['title'] = 'Читать'

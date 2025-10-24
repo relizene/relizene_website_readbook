@@ -1,11 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 {% load books_tags %}
-<html lang="en">
 <head>
     {% block css %}
-        <link rel="stylesheet" href="{% static "css\book\book.css" %}">
-        <link rel="stylesheet" href="{% static "css\book\book_filter.css" %}">
+        <link rel="stylesheet" href="{% static "css\book\book_catalog\book_filter.css" %}">
+        <link rel="stylesheet" href="{% static "css\book\book_catalog\book.css" %}">
     {% endblock  %}
 </head>
 <body>
@@ -66,15 +65,22 @@
                                             <div class="filter-group">
                                                 <label class="filter-group-label">Год издания</label>
                                                 <div class="year-filters">
-                                                    <button type="button" class="year-filter">2020-2024</button>
-                                                    <button type="button" class="year-filter">2010-2019</button>
-                                                    <button type="button" class="year-filter">2000-2009</button>
+                                                    <a href="?{% change_params year='one' %}" style="text-decoration:none;">
+                                                    <button type="button" class="year-filter">1800-1900</button>
+                                                    </a>
+                                                    <a href="?{% change_params year='two' %}" style="text-decoration:none;">
+                                                    <button type="button" class="year-filter">1900-2000</button>
+                                                    </a>
+                                                    <a href="?{% change_params year='three' %}" style="text-decoration:none;">
+                                                    <button type="button" class="year-filter">2000-н.д.</button>
+                                                    </a>
                                                 </div>
                                             </div>
 
                                             <div class="filter-group">
                                                 <label class="filter-group-label">Рейтинг</label>
                                                 <div class="rating-filters">
+                                                    <a href="?{% change_params ratings='one' %}" style="text-decoration:none;">
                                                     <button type="button" class="rating-filter">
                                                         <i class="fas fa-star"></i>
                                                         <i class="fas fa-star"></i>
@@ -83,6 +89,8 @@
                                                         <i class="fas fa-star"></i>
                                                         4.5+
                                                     </button>
+                                                    </a>
+                                                    <a href="?{% change_params ratings='two' %}" style="text-decoration:none;">
                                                     <button type="button" class="rating-filter">
                                                         <i class="fas fa-star"></i>
                                                         <i class="fas fa-star"></i>
@@ -90,6 +98,7 @@
                                                         <i class="fas fa-star"></i>
                                                         4.0+
                                                     </button>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,8 +110,21 @@
                         <div class="row">
                             <div class="book-cards-container">
                                     <!-- Карточка 1 -->
+                                    {% if request.GET.books_search or request.GET.ratings %}
+                                    {% if not books %}
+                                        <!-- Блок для случая "ничего не найдено" -->
+                                        <div class="empty-state" id="emptyState">
+                                            <div class="empty-content">
+                                                <h3 class="mt-4 center text-align: center;">Результаты поиска по запросу {{request.GET.books_search}}</h3>
+                                                <div class="empty-icon">📚</div>
+                                                <h3 class="empty-title">Ничего не найдено</h3>
+                                                <p class="empty-description">Попробуйте изменить параметры поиска</p>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                    {% endif %}
                                      {% for book in books %}
-                                     <a href="{% url "book:read" book.slug %}" style="text-decoration:none;">
+                                     <a href="{% url "book:read" book.slug %}" style="text-decoration:none; display:none;">
                                      <div class="book-card">
                                          <div class="book-card-content">
                                              <img src="{{book.image.url}}" 
@@ -195,8 +217,8 @@
 
     </footer>
     {% endblock  %}
+    {% block script %}
     <script src="{% static "js\book\book.js" %}"></script>
-    <script src="{% static "js\book\pagination.js" %}"></script>
-    <script src="{% static "js\book\filter.js" %}"></script>
+    {% endblock  %}
+   
 </body>
-</html>

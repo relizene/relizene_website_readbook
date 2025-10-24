@@ -1,9 +1,12 @@
 @import url(https://fonts.googleapis.com/css?family=Montserrat&display=swap);
-@import url(image\4.jpg); 
 
 body {
     font-family: Montserrat;
     background-color: #2f2fa2;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 ::placeholder {
@@ -103,56 +106,7 @@ body {
 
 /* стили для основного контента */
 
-.content {
-    background: url('4.jpg') no-repeat center;
-    background-size: cover;
-}
 
-.content-first {
-    display: block;
-    align-items: center;
-    background: linear-gradient(90deg, #001eff 10%, #070709 99%);
-    box-shadow: 0px 1px 7px 7px #f5009b;  
-    padding-left: 0;
-    margin-left: 0;
-    padding-right: 0;
-    margin-right: 0;
-    z-index: 2;  
-}
-.content-first .row {
-    margin-right: 0;
-    margin-left: 5;
-}
-
-.image-first {
-    display: flex;
-    height: 22em;
-    padding-right: 0;
-}
-.content-image1{
-    display: flex;
-    justify-content: right;
-    width: 100%;
-}
-.text-first {
-    display: flex;
-    align-items: center;
-    padding-left: 8em;
-    color: aqua;
-}
-
-
-
-.content-first:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2), 0 0 0 2px rgba(255, 255, 255, 0.3);
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-.content-first {
-    /* остальные стили остаются без изменений */
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
 
 /* стили для footer */
 
@@ -176,7 +130,9 @@ body {
     margin:auto !important;
     position: relative !important;
     display: block !important;
-    margin-bottom: 4;
+    margin-bottom: 0 !important;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
 }
 
 .litnet-carousel {
