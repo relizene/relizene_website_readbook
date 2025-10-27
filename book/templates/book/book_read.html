@@ -57,13 +57,14 @@
 
                     <div class="stats-container">
                         <div class="stat">
-                             <a href="{% url "book:read" book.slug %}" style="text-decoration:none;">
+                             <form class="text-decoration:none;" action="{% url "book:read" book.slug %}" method="get">
                                 <button class="like-btn" id="likeButton">
-                                    <input type="text" name='like' style="text-decoration:none;" value="1">
+                                    <input type="text" name='like' style="text-decoration:none; display: none;" value="1", >
+                                    <input type="text" name='page' style="text-decoration:none; display: none;" value="{{book.book_page}}", >
                                     <span>❤️</span>
                                     <span id="likeCount">{{book.likes}}</span> лайков                                
                                 </button>
-                            </a>
+                            </form>
                         </div>
                         <div class="stat pages-count">
                             <span>📖</span>
@@ -143,11 +144,12 @@
                 <!-- Панель управления -->
                 <div class="reader-controls">
                     {% if book.book_page > 1 %}        
-                    <a href="?{% change_params page=book.book_page|add:'-1' %}" style="text-decoration:none;">
+                    <form class="search-form" action="{% url "book:read" book.slug %}" method="get">
+                    <input type="text" name='page' style="text-decoration:none; display: none;" value="{{book.book_page|add:'-1'}}", >
                     <button class="control-btn" id="prevPage">
                         <span>←</span> Предыдущая
                     </button>
-                    </a>
+                    </form>
                     {% else %}
                     <button class="control-btn disable" id="prevPage" style="disable">
                         <span>←</span> Предыдущая
@@ -166,11 +168,12 @@
                     </div>
                     
                     {% if book.book_page < book.book_lists %}
-                    <a href="?{% change_params page=book.book_page|add:'1' %}" style="text-decoration:none;">
+                    <form class="search-form" action="{% url "book:read" book.slug %}" method="get">
+                    <input type="text" name='page' style="text-decoration:none; display: none;" value="{{book.book_page|add:'1'}}", >
                     <button class="control-btn" id="nextPage">
                         Следующая <span>→</span>
                     </button>
-                    </a>
+                    </form>
                     {% else %}
                         <button class="control-btn disable" id="prevPage" style="disable">
                         Следующая

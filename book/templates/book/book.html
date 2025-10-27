@@ -124,7 +124,7 @@
                                     {% endif %}
                                     {% endif %}
                                      {% for book in books %}
-                                     <a href="{% url "book:read" book.slug %}" style="text-decoration:none; display:none;">
+                                     <a href="{% url "book:read" book.slug %}" style="text-decoration:none;">
                                      <div class="book-card">
                                          <div class="book-card-content">
                                              <img src="{{book.image.url}}" 

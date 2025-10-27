@@ -93,6 +93,10 @@ class ReadBook(DetailView):
         like = self.request.GET.get('like', None)
         try:
             book = BooksRead.objects.get(slug=self.kwargs.get(self.slug_url_kwarg))
+            if like == '1':
+                BooksRead.objects.filter(pk=book.pk).update(
+                    likes = book.likes + 1,
+                )
             
             return  self.get_page(book, page)         
         except Exception as e:
