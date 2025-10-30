@@ -11,6 +11,13 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+<<<<<<< HEAD
+=======
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+>>>>>>> c37841f (Light fix for endpoint on fastapi)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +27,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-r_w32%m*67vkswf=9d1)v0y$jdrv+(c^1i+1!v9i(i*ae2k&hi'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split()
 
 
 # Application definition
@@ -81,11 +88,11 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'admin',
-        'USER' : 'admin',
-        'PASSWORD' : 'Makspermac1999',
-        'HOST' : 'localhost',
-        'PORT' : '5432',
+        'NAME': os.getenv('NAME_POSTGRES'),
+        'USER' : os.getenv('USER_POSTGRES'),
+        'PASSWORD' : os.getenv('PASSWORD_POSTGRES'),
+        'HOST' : os.getenv('HOST_POSTGRES'),
+        'PORT' : os.getenv('PORT_POSTGRES'),
     }
 }
 
@@ -140,3 +147,31 @@ MEDIA_ROOT = BASE_DIR / 'media'
 INTERNAL_IPS = [
     "127.0.0.1",
 ]
+
+# Ручки для микросервиса на fastapi
+UPLOAD_BOOK = 'http://localhost:8000/books-upload'
+DELETE_BOOK = 'http://localhost:8000/books-delete'
+GET_PAGE_BOOK = 'http://localhost:8000/get_page'
+
+
+
+# Настройки Yandex Cloud
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID') 
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')  
+AWS_S3_ENDPOINT_URL = 'https://storage.yandexcloud.net'
+AWS_S3_REGION_NAME = 'ru-central1'
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+
+# Раздельное хранение статики и медиа
+STATICFILES_STORAGE = 'app.storage_backends.StaticStorage'
+DEFAULT_FILE_STORAGE = 'app.storage_backends.MediaStorage'
+
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
+STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.storage.yandexcloud.net/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.storage.yandexcloud.net/media/'
+

@@ -5,7 +5,7 @@ from book.models import BooksCategories, BooksRead
 from book.utils import q_search
 from django.db.models.query import QuerySet
 import requests
-
+from app.settings import GET_PAGE_BOOK
 # Create your views here.
 class CatalogView(ListView):
     template_name = 'book/book.html'
@@ -67,7 +67,7 @@ class ReadBook(DetailView):
                 'page' : page_number,
                 'book_id' : book_id,
             }
-            response = requests.post('http://localhost:8000/get_page',
+            response = requests.post(GET_PAGE_BOOK,
                                     json = payload,
                                     timeout=10).json()
             return response['content'] if response['cod'] == '3001' else None

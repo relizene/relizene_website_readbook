@@ -7,6 +7,7 @@ import requests
 from book.models import BooksCategories, BooksRead
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from app.settings import UPLOAD_BOOK, DELETE_BOOK
 
 
 #admin.site.register(Categories)
@@ -20,7 +21,7 @@ def delete_book_from_mongo(modeladmin, request, queryset):
                    }
         if book.book_id:
             try:
-                response = requests.post('http://localhost:8000/books-delete', json=payload, timeout=30).json()
+                response = requests.post(DELETE_BOOK, json=payload, timeout=30).json()
                 if response['cod'] == '2001':
                     #Полное удаление и страниц и книги
                     BooksRead.objects.filter(pk=book.pk).update(
@@ -104,7 +105,7 @@ class BooksAdmin(admin.ModelAdmin):
                     'pages' : str(obj.book_lists),
                 }
                 try:
-                    response = requests.post('http://localhost:8000/books-delete', json=payload, timeout=30).json()
+                    response = requests.post(DELETE_BOOK, json=payload, timeout=30).json()
                     if response['cod'] == '2001':
                         #Полное удаление и страниц и книги и самой записи в постгресс
                         super().delete_model(request, obj)
