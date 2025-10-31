@@ -43,9 +43,20 @@ Thumbs.db
 logs/
 
 # Docker
-docker-compose.override.yml
 
 # Environment variables
 .env
 
 .json
+.gitignore
+settings.json
+staticfiles/
+
+
+.git
+__pycache__
+*.pyc
+*.pyo
+.env
+.DS_Store
+README.md
