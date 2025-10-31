@@ -53,6 +53,7 @@ settings.json
 staticfiles/
 
 
+
 .git
 __pycache__
 *.pyc
