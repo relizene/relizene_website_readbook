@@ -1,5 +1,9 @@
+from typing import Any
+from django.http import HttpRequest
+from django.http.response import HttpResponse 
 from django.views.generic import  TemplateView
 from main.utils import find_temprature, find_temprature_coord
+from django.shortcuts import render
 
 # Create your views here.
 class Indexview(TemplateView):
@@ -22,3 +26,10 @@ class Indexview(TemplateView):
         context['title'] = 'Home - Главная страница'
     
         return context
+
+def custom_404(request, exception=None):
+    """
+    Кастомная страница 404
+    """
+   
+    return render(request, '404.html', status=404)

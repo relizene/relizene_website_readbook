@@ -16,20 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from django.conf import settings
-from django.conf.urls.static import static
-from django.views.generic import TemplateView
+from main.views import custom_404
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('main.urls', namespace='main')),
     path('book/', include('book.urls', namespace='book')),
-    path('test-404/', TemplateView.as_view(template_name='404.html'))
 ] 
-
-if settings.DEBUG:
+handler404 = custom_404
+"""if settings.DEBUG == 'true':
     urlpatterns += [
         path('__debug__/', include('debug_toolbar.urls')),
     ]
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)"""

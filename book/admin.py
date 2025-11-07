@@ -7,7 +7,7 @@ import requests
 from book.models import BooksCategories, BooksRead
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from app.settings import UPLOAD_BOOK, DELETE_BOOK
+from app.settings import DELETE_BOOK
 
 
 #admin.site.register(Categories)

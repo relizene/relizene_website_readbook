@@ -2,6 +2,8 @@ from django.db import models
 import requests
 import base64
 import os
+from app.settings import UPLOAD_BOOK
+from app.storage_backends import MediaStorage
 
 # Create your models here.
 class BooksCategories(models.Model):
@@ -30,7 +32,7 @@ class BooksRead(models.Model):
     author_name = models.CharField(max_length=150,  verbose_name='Автор книги')
     reliz_year = models.IntegerField(blank=True ,null=True,default=0, verbose_name='Год выпуска')
     description = models.TextField(blank=True, null=True, verbose_name='Описание',)
-    image = models.ImageField(upload_to='book_images', blank=True, null=True, verbose_name='Изображение')
+    image = models.ImageField(upload_to='book_images', blank=True, null=True, verbose_name='Изображение', storage=MediaStorage())
     category = models.ForeignKey(to=BooksCategories, on_delete=models.CASCADE, verbose_name='Категория')
     likes = models.IntegerField(blank=True, null=True, verbose_name='Лайки')
     file = models.FileField(blank=True, null=True, upload_to='book_file', verbose_name='Файл книги в pdf')
@@ -78,7 +80,7 @@ class BooksRead(models.Model):
                     'content' : file_data, 
                 }
                 response = requests.post(
-                    'http://localhost:8000/books-upload',
+                    UPLOAD_BOOK,
                     json = payload,
                     timeout = 30
                 ).json()
