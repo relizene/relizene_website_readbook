@@ -156,6 +156,6 @@ DEFAULT_FILE_STORAGE = 'app.storage_backends.MediaStorage'
 
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
-STATIC_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.storage.yandexcloud.net/static/'
-MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.storage.yandexcloud.net/media/'
+STATIC_URL = f'https://storage.yandexcloud.net/{AWS_STORAGE_BUCKET_NAME}/static/'
+MEDIA_URL = f'https://storage.yandexcloud.net/{AWS_STORAGE_BUCKET_NAME}/media/'
 
