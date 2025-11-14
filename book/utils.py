@@ -9,7 +9,7 @@ def q_search(query):
     
     result = (
         BooksRead.objects.annotate(rank=SearchRank(vector, query))
-        .filter(rank__gt=0.01)
+        .filter(rank__gt=0.0001)
         .order_by('-rank'))
     
     return result
